@@ -5,6 +5,8 @@ const userSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   refreshToken: { type: String }, 
+  storageUsed: { type: Number, default: 0 },
+  documentsUploaded: { type: Number, default: 0 },
 },
  { timestamps: true });
 

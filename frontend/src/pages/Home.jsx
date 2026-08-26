@@ -1,7 +1,5 @@
 import React from 'react'
 import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
-import "./Home.css";
 import apiRequest from '../api/apiRequest';
 
 export default function Home() {
@@ -12,19 +10,33 @@ export default function Home() {
     }
 
     return (
-        <>
-            <div className="home-container">
-                <div><b>Welcome to Chatbot</b></div><br/>
-                <button onClick={testProtected}>Test Protected Route</button>
-                <br/>
-                <Link to="/login"><b>click here to use it free.</b> </Link><br />
+        <div className="h-screen w-full bg-cover bg-center flex items-center justify-center" style={{ backgroundImage: 'url("/Chatbot.avif")' }}>
+            
+            {/* Overlay for readability */}
+            <div className="absolute inset-0 bg-black/40"></div>
 
+            {/* Content */}
+            <div className="relative z-10 text-center space-y-6">
+                <h1 className="text-5xl font-bold text-white mb-8">
+                    Welcome to Chatbot
+                </h1>
 
+                <button
+                    onClick={testProtected}
+                    className="bg-blue-600 text-white font-semibold py-3 px-8 rounded-lg hover:bg-blue-700 transition-colors"
+                >
+                    Test Protected Route
+                </button>
 
+                <div>
+                    <Link
+                        to="/login"
+                        className="text-white text-lg font-bold hover:text-blue-300 transition-colors underline"
+                    >
+                        Click here to use it free.
+                    </Link>
+                </div>
             </div>
-
-
-        </>
-
+        </div>
     )
 }

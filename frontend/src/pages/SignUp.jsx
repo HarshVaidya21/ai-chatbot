@@ -1,19 +1,13 @@
 import React, { useState } from "react";
-import "./Login.css";
 import { useNavigate, Link } from "react-router-dom";
-
 
 const Signup = () => {
   const navigate = useNavigate();
-  
-
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
-
 
   const handleSignup = async (e) => {
     e.preventDefault();
@@ -21,28 +15,19 @@ const Signup = () => {
     setSubmitting(true);
 
     try {
-      // TODO 1: Make a POST request to http://localhost:5000/api/auth/login
-      // using fetch, with headers: { 'Content-Type': 'application/json' }
-      // and body: JSON.stringify({ email, password })
-
       const response = await fetch('http://localhost:5000/api/auth/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name,email, password })
+        body: JSON.stringify({ name, email, password })
       });
 
-
-
-      // TODO 2: Parse the response as JSON (hint: await response.json())
       const data = await response.json()
 
-      // TODO 3: If response.ok is false, throw an error with the message from the response
-      // (hint: throw new Error(data.message))
       if (!response.ok) {
-  throw new Error(data.message);
-}
+        throw new Error(data.message);
+      }
 
-  navigate('/login');
+      navigate('/login');
 
     } catch (err) {
       setError(err.message);
@@ -51,50 +36,65 @@ const Signup = () => {
     }
   };
 
-
-    
-
   return (
-    <div className="login-container">
-      <div className="login-box">
-        <h2>Sign Up</h2>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-100 flex items-center justify-center p-4">
+      <div className="w-full max-w-md bg-white rounded-lg shadow-lg p-8">
+        
+        <h2 className="text-3xl font-bold text-gray-900 mb-6 text-center">
+          Sign Up
+        </h2>
 
-        <form onSubmit={handleSignup}>
-          <input
-            type="text"
-            placeholder="Full name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
-          />
+        <form onSubmit={handleSignup} className="space-y-4">
+          <div>
+            <input
+              type="text"
+              placeholder="Full name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
+            />
+          </div>
 
-          <input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
+          <div>
+            <input
+              type="email"
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
+            />
+          </div>
 
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            minLength={6}
-          />
-          
+          <div>
+            <input
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              minLength={6}
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
+            />
+          </div>
 
-          {error && <p className="login-error">{error}</p>}
+          {error && <p className="text-red-600 text-sm font-medium">{error}</p>}
 
-          <button type="submit" disabled={submitting}>
+          <button
+            type="submit"
+            disabled={submitting}
+            className="w-full bg-blue-600 text-white font-semibold py-2 rounded-lg hover:bg-blue-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
+          >
             {submitting ? "Creating account…" : "Sign Up"}
           </button>
         </form>
 
-        <p className="login-switch">
-          Already have an account? <Link to="/login">Login</Link>
+        <p className="mt-6 text-center text-gray-600">
+          Already have an account?{' '}
+          <Link to="/login" className="text-blue-600 font-semibold hover:text-blue-700">
+            Login
+          </Link>
         </p>
       </div>
     </div>

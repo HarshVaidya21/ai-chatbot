@@ -1,50 +1,38 @@
 const BASE_URL = 'http://localhost:5000/api/auth';
 
 async function apiRequest(url, options = {}) {
-    // Step 1: Get the current access token from localStorage
-    let accessToken = localStorage.getItem('token');
+  let accessToken = localStorage.getItem('token');
 
-    // Step 2: Build headers — attach Authorization + whatever headers were passed in
-    const headers = {
-        'Content-Type': 'application/json',
-        ...options.headers,
-        Authorization: `Bearer ${accessToken}`,
-    };
+  const isFormData = options.body instanceof FormData;
 
-    // Step 3: Make the actual request
-    let response = await fetch(url, { ...options, headers });
+  const headers = {
+    ...(!isFormData && { 'Content-Type': 'application/json' }), // skip this for FormData
+    ...options.headers,
+    Authorization: `Bearer ${accessToken}`,
+  };
 
-    // Step 4: If token expired (401), try to refresh
-    if (response.status === 401) {
-        const refreshed = await tryRefreshToken();
+  let response = await fetch(url, { ...options, headers });
 
-        if (!refreshed) {
-            // TODO 1: refresh failed too — redirect to login
-            // hint: window.location.href = '/login'
-            // then return response; (nothing more we can do)
-            window.location.href = '/login';
-            return response;
-        }
+  if (response.status === 401) {
+    const refreshed = await tryRefreshToken();
 
-        // TODO 2: refresh succeeded — get the NEW token from localStorage again
-        // (tryRefreshToken already saved it there, just re-read it)
-        accessToken = localStorage.getItem('token');
-
-
-        // TODO 3: rebuild headers with the new token (same shape as Step 2)
-        const newHeaders = {
-            'Content-Type': 'application/json',
-            ...options.headers,
-            Authorization: `Bearer ${accessToken}`,
-        };
-
-        // TODO 4: retry the original request ONE more time with new headers
-        // hint: response = await fetch(url, { ...options, headers: newHeaders });
-        response = await fetch(url, { ...options, headers: newHeaders });
-
+    if (!refreshed) {
+      window.location.href = '/login';
+      return response;
     }
 
-    return response;
+    accessToken = localStorage.getItem('token');
+
+    const newHeaders = {
+      ...(!isFormData && { 'Content-Type': 'application/json' }),
+      ...options.headers,
+      Authorization: `Bearer ${accessToken}`,
+    };
+
+    response = await fetch(url, { ...options, headers: newHeaders });
+  }
+
+  return response;
 }
 
 async function tryRefreshToken() {
