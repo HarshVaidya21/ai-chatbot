@@ -12,10 +12,10 @@ export default function Home() {
     return (
         <div className="h-screen w-full bg-cover bg-center flex items-center justify-center" style={{ backgroundImage: 'url("/Chatbot.avif")' }}>
             
-            {/* Overlay for readability */}
+            
             <div className="absolute inset-0 bg-black/40"></div>
 
-            {/* Content */}
+            
             <div className="relative z-10 text-center space-y-6">
                 <h1 className="text-5xl font-bold text-white mb-8">
                     Welcome to Chatbot

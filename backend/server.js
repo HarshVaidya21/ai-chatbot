@@ -39,4 +39,3 @@ app.use('/api', conversationRoutes);
 
 app.listen(5000, () => console.log('Server running on port 5000'));
 
-// localStorage.clear()--just to clear tokens

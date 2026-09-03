@@ -6,7 +6,7 @@ async function apiRequest(url, options = {}) {
   const isFormData = options.body instanceof FormData;
 
   const headers = {
-    ...(!isFormData && { 'Content-Type': 'application/json' }), // skip this for FormData
+    ...(!isFormData && { 'Content-Type': 'application/json' }),
     ...options.headers,
     Authorization: `Bearer ${accessToken}`,
   };
@@ -36,26 +36,26 @@ async function apiRequest(url, options = {}) {
 }
 
 async function tryRefreshToken() {
-    const refreshToken = localStorage.getItem('refreshToken');
+  const refreshToken = localStorage.getItem('refreshToken');
 
-    if (!refreshToken) return false;
+  if (!refreshToken) return false;
 
-    try {
-        const res = await fetch(`${BASE_URL}/refresh`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ refreshToken }),
-        });
+  try {
+    const res = await fetch(`${BASE_URL}/refresh`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ refreshToken }),
+    });
 
-        if (!res.ok) return false;
+    if (!res.ok) return false;
 
-        const data = await res.json();
-        localStorage.setItem('token', data.accessToken);
-        return true;
+    const data = await res.json();
+    localStorage.setItem('token', data.accessToken);
+    return true;
 
-    } catch (err) {
-        return false;
-    }
+  } catch (err) {
+    return false;
+  }
 }
 
 export default apiRequest;

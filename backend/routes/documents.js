@@ -34,14 +34,14 @@ function chunkText(text, chunkSize = 1000, overlap = 200) {
   return chunks;
 }
 
-// Wrap multer so fileFilter/size errors return clean JSON instead of crashing
+
 function handleUpload(req, res, next) {
   upload.single('file')(req, res, (err) => {
     if (err instanceof multer.MulterError) {
-      // e.g. file too large
+
       return res.status(400).json({ message: err.message });
     } else if (err) {
-      // e.g. our custom fileFilter rejection ("Only PDF files are allowed")
+
       return res.status(400).json({ message: err.message });
     }
     next();
@@ -63,22 +63,22 @@ router.post('/upload', authMiddleware, handleUpload, async (req, res) => {
       });
     }
 
-    // Step 1: Extract text
+
     const parser = new PDFParse({ data: req.file.buffer });
     const result = await parser.getText();
     await parser.destroy();
 
-    // Step 2: Chunk it
+
     const chunks = chunkText(result.text);
     console.log("Total chunks:", chunks.length);
 
-    // Step 3: Get or create collection
+
     const collection = await chroma.getOrCreateCollection({
       name: `user_${req.userId}`,
       embeddingFunction: new NoEmbedding(),
     });
 
-    // Step 4: Embed each chunk and collect
+
     const ids = [];
     const embeddings = [];
     const documents = [];
@@ -91,11 +91,11 @@ router.post('/upload', authMiddleware, handleUpload, async (req, res) => {
       documents.push(chunks[i]);
     }
 
-    // Step 5: Store everything in Chroma
+
     await collection.add({ ids, embeddings, documents });
     console.log("All chunks stored in Chroma successfully");
 
-    // Increment document count after successful upload
+
     await User.findByIdAndUpdate(req.userId, {
       documentsUploaded: user.documentsUploaded + 1
     });

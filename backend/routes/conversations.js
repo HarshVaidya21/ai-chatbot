@@ -42,7 +42,7 @@ router.patch('/conversations/:id/title', authMiddleware, async (req, res) => {
     const conversation = await Conversation.findByIdAndUpdate(
       req.params.id,
       { title },
-      { new: true } 
+      { new: true }
     );
     res.json(conversation);
   } catch (err) {

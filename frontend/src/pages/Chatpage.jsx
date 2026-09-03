@@ -133,8 +133,8 @@ function Chatpage() {
 
   return (
     <div className="flex h-screen bg-gray-50">
-      
-      {/* Sidebar */}
+
+
       <div className="w-64 bg-white border-r border-gray-200 flex flex-col">
         <div className="p-4 border-b border-gray-200">
           <button
@@ -145,17 +145,15 @@ function Chatpage() {
           </button>
         </div>
 
-        {/* Conversations list */}
         <div className="flex-1 overflow-y-auto">
           {conversations.map(conv => (
             <div
               key={conv._id}
               onClick={() => handleSelectConversation(conv._id)}
-              className={`px-4 py-3 cursor-pointer border-l-4 transition-colors ${
-                activeConversationId === conv._id
+              className={`px-4 py-3 cursor-pointer border-l-4 transition-colors ${activeConversationId === conv._id
                   ? 'bg-blue-50 border-blue-600 text-blue-600'
                   : 'border-transparent hover:bg-gray-100'
-              }`}
+                }`}
             >
               <p className="text-sm font-medium truncate">{conv.title}</p>
             </div>
@@ -163,10 +161,10 @@ function Chatpage() {
         </div>
       </div>
 
-      {/* Main chat area */}
+
       <div className="flex-1 flex flex-col">
-        
-        {/* Messages container */}
+
+
         <div className="flex-1 overflow-y-auto p-6 space-y-4">
           {chatHistory.map((msg, index) => (
             <div
@@ -174,11 +172,10 @@ function Chatpage() {
               className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
             >
               <div
-                className={`max-w-md px-4 py-2 rounded-lg ${
-                  msg.role === 'user'
+                className={`max-w-md px-4 py-2 rounded-lg ${msg.role === 'user'
                     ? 'bg-blue-600 text-white rounded-br-none'
                     : 'bg-gray-200 text-gray-900 rounded-bl-none'
-                }`}
+                  }`}
               >
                 <p className="text-sm">{msg.content}</p>
               </div>
@@ -186,7 +183,7 @@ function Chatpage() {
           ))}
         </div>
 
-        {/* Upload status */}
+
         {uploadStatus && (
           <div className="px-6 py-2">
             {uploadStatus === 'uploading' && (
@@ -201,7 +198,7 @@ function Chatpage() {
           </div>
         )}
 
-        {/* Input area */}
+
         <div className="border-t border-gray-200 bg-white p-4">
           <div className="flex items-center gap-3">
             <input
